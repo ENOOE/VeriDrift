@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-MIN_VALID_OUTPUT_DATE = "20260423"
+MIN_VALID_OUTPUT_PREFIX = ""
 SUPPORTED_MALICIOUS_FRACTIONS = (0.1, 0.3, 0.5)
 
 
@@ -79,7 +79,9 @@ def normalize_requested_malicious_fractions(values: Iterable[float]) -> list[flo
     return normalized
 
 
-def output_dir_is_new_enough(output_dir: Path, min_date: str = MIN_VALID_OUTPUT_DATE) -> bool:
+def output_dir_is_new_enough(output_dir: Path, min_prefix: str = MIN_VALID_OUTPUT_PREFIX) -> bool:
+    if not min_prefix:
+        return True
     candidates = [output_dir]
     try:
         resolved = output_dir.resolve()
@@ -89,7 +91,7 @@ def output_dir_is_new_enough(output_dir: Path, min_date: str = MIN_VALID_OUTPUT_
         candidates.append(resolved)
     for candidate in candidates:
         timestamp_prefix = candidate.name[:8]
-        if len(timestamp_prefix) == 8 and timestamp_prefix.isdigit() and timestamp_prefix >= str(min_date):
+        if len(timestamp_prefix) == 8 and timestamp_prefix.isdigit() and timestamp_prefix >= str(min_prefix):
             return True
     return False
 
@@ -104,7 +106,7 @@ def configure_partition(
     spec_slug: str,
     partition: str,
     seed: int,
-    node_defense_root: Path,
+    project_root: Path,
     metadata_absolute: bool,
 ) -> str:
     partition = canonical_partition_name(partition)
@@ -135,7 +137,7 @@ def configure_partition(
         raise ValueError(f"Unsupported partition: {partition}")
 
     if metadata_absolute:
-        partition_path = (node_defense_root / "partitions" / partition_file).resolve()
+        partition_path = (project_root / "partitions" / partition_file).resolve()
     else:
         partition_path = Path("partitions") / partition_file
     cfg["federated"]["partition_metadata_path"] = str(partition_path)

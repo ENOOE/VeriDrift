@@ -61,10 +61,8 @@ class TrustMLP(nn.Module):
 class ProxySupervisedTrustCertifier:
     """Legacy risk-credit certifier kept under the old import name.
 
-    This restores the pre-proxy stage-2 behavior used by the kept
-    20260413 runs: observe rounds collect update geometry, calibration
-    trains a small weakly supervised MLP, and active rounds use
-    trusted/suspicious/reject decisions for risk-aware aggregation.
+    This compatibility implementation keeps the observe, calibration, and active
+    stages used by earlier risk-credit experiments.
     """
 
     def __init__(

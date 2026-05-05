@@ -107,7 +107,7 @@ def build_config(base_cfg: dict, spec: DatasetSpec, partition: str, trigger: str
         spec_slug=spec.slug,
         partition=partition,
         seed=int(seed),
-        node_defense_root=Path(__file__).resolve().parent,
+        project_root=Path(__file__).resolve().parent,
         metadata_absolute=False,
     )
     trigger = configure_trigger(cfg, trigger)
@@ -142,9 +142,9 @@ def selected_specs(names: Iterable[str] | None) -> list[DatasetSpec]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the full node-defense main experiment sweep.")
+    parser = argparse.ArgumentParser(description="Run the full VeriDrift main experiment sweep.")
     parser.add_argument("--device", default="cuda")
-    parser.add_argument("--conda-env", default="fgl_case_study")
+    parser.add_argument("--conda-env", default="veridrift")
     parser.add_argument("--force", action="store_true", help="Rerun even when a complete matching output exists.")
     parser.add_argument("--datasets", nargs="*", help="Optional subset by label, slug, or config name.")
     parser.add_argument("--partitions", nargs="*", default=["iid", "louvain"])

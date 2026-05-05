@@ -24,9 +24,8 @@ def _dataset_key(name: str) -> str:
 def load_planetoid_dataset(root: str, name: str):
     """Load supported node-classification datasets through PyG.
 
-    The historical training code called this helper for Planetoid datasets only.
-    Keeping the public name avoids touching the training entrypoint while allowing
-    the main experiment sweep to cover Coauthor and Amazon benchmarks too.
+    The training entrypoint uses this helper for all supported node-classification
+    datasets, including Planetoid, Coauthor, and Amazon benchmarks.
     """
     raw_name = str(name).strip()
     key = _dataset_key(raw_name)
